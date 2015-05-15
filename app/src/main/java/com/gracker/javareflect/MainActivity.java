@@ -16,6 +16,8 @@ import java.lang.reflect.Modifier;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "MainActivity";
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
+            demo0();
             demo1();
             demo2();
             demo3();
@@ -38,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
                 | NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+
+    //正常加载Person类
+    private void demo0() {
+        System.out.println("====================Demo0======================");
+        TimeUtils.start();
+        Person mPerson = new Person();
+        mPerson.setAge("28");
+        mPerson.setName("Xiao Ming");
+        System.out.println(mPerson.toString() + " Time = " + TimeUtils.end());
+        System.out.println("===============================================");
     }
 
     private void demo1() throws ClassNotFoundException {
@@ -67,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
      * @throws InstantiationException
      */
     public static void demo2() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        TimeUtils.start();
         Class<?> class1 = null;
         class1 = Class.forName("com.gracker.javareflect.Person");
         //由于这里不能带参数，所以你要实例化的这个类Person，一定要有无参构造函数哈～
@@ -76,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("====================Demo2======================");
         System.out.println("Demo2 构造没有参数的对象: " + person.getName() + " : " + person.getAge());
+        System.out.println("Time = " + TimeUtils.end());
         System.out.println("===============================================");
     }
 
