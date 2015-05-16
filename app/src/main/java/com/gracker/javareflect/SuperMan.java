@@ -7,7 +7,7 @@ package com.gracker.javareflect;
 public class SuperMan extends Person implements ActionInterface {
     @Override
     public String toString() {
-        return "我是超人：我的名字叫：" + name.toString();
+        return "我是超人：我的名字叫：" + name;
     }
 
     @Override

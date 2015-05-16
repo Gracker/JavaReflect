@@ -54,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("===============================================");
     }
 
+    //演示反射的两种写法
     private void demo1() throws ClassNotFoundException {
         //定义两个类型都未知的Class , 设置初值为null, 看看如何给它们赋值成Person类
-        Class<?> class1 = null;
-        Class<?> class2 = null;
+        Class<?> class1;
+        Class<?> class2;
 
         //写法1, 可能抛出 ClassNotFoundException [多用这个写法]
         class1 = Class.forName("com.gracker.javareflect.Person");
@@ -82,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void demo2() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         TimeUtils.start();
-        Class<?> class1 = null;
+        Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.Person");
-        //由于这里不能带参数，所以你要实例化的这个类Person，一定要有无参构造函数哈～
+        //由于这里不能带参数，所以你要实例化的这个类Person，一定要有无参构造函数，后续的Demo会演示如何调用带参数的构造函数
         Person person = (Person) class1.newInstance();
         person.setAge("20");
         person.setName("Gao Jianwu");
@@ -106,21 +107,18 @@ public class MainActivity extends AppCompatActivity {
      * @throws IllegalArgumentException
      */
     public static void demo3() throws ClassNotFoundException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Class<?> class1 = null;
-        Person person1 = null;
-        Person person2 = null;
+        Class<?> class1;
+        Person person1;
+        Person person2;
 
         class1 = Class.forName("com.gracker.javareflect.Person");
         //得到一系列构造函数集合
         Constructor<?>[] constructors = class1.getConstructors();
 
-        try {
-            person1 = (Person) constructors[0].newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+        person1 = (Person) constructors[0].newInstance();
         person1.setAge("22");
         person1.setName("Gao Jianwu");
+
 
         person2 = (Person) constructors[1].newInstance("20", "Sun Yibo");
 
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
      * @throws ClassNotFoundException
      */
     public static void demo4() throws IllegalArgumentException, IllegalAccessException, SecurityException, NoSuchFieldException, InstantiationException, ClassNotFoundException {
-        Class<?> class1 = null;
+        Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.Person");
         Object obj = class1.newInstance();
 
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
      * @throws ClassNotFoundException
      */
     public static void demo5() throws ClassNotFoundException {
-        Class<?> class1 = null;
+        Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.SuperMan");
 
         //取得父类名称
@@ -180,26 +178,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         Field[] fields = class1.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            System.out.println("类中的成员: " + fields[i]);
+        for (Field field : fields) {
+            System.out.println("类中的成员: " + field);
         }
 
         //取得类方法
 
         Method[] methods = class1.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
+        for (Method method : methods) {
             System.out.println("demo5,取得SuperMan类的方法：");
-            System.out.println("函数名：" + methods[i].getName());
-            System.out.println("函数返回类型：" + methods[i].getReturnType());
-            System.out.println("函数访问修饰符：" + Modifier.toString(methods[i].getModifiers()));
-            System.out.println("函数代码写法： " + methods[i]);
+            System.out.println("函数名：" + method.getName());
+            System.out.println("函数返回类型：" + method.getReturnType());
+            System.out.println("函数访问修饰符：" + Modifier.toString(method.getModifiers()));
+            System.out.println("函数代码写法： " + method);
         }
 
 
         //取得类实现的接口,因为接口类也属于Class,所以得到接口中的方法也是一样的方法得到哈
         Class<?> interfaces[] = class1.getInterfaces();
-        for (int i = 0; i < interfaces.length; i++) {
-            System.out.println("实现的接口类名: " + interfaces[i].getName());
+        for (Class<?> anInterface : interfaces) {
+            System.out.println("实现的接口类名: " + anInterface.getName());
         }
         System.out.println("===============================================");
 
@@ -217,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
      * @throws InstantiationException
      */
     public static void demo6() throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class<?> class1 = null;
+        Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.SuperMan");
         System.out.println("=====================Demo6=====================");
 
@@ -248,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
     public static void demo7() throws ClassNotFoundException {
         System.out.println("=====================Demo7=====================");
 
-        Class<?> class1 = null;
+        Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.SuperMan");
         String nameString = class1.getClassLoader().getClass().getName();
 
