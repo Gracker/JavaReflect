@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //正常加载Person类
+    /**
+     * 正常加载Person类
+     */
     private void demo0() {
         System.out.println("====================Demo0======================");
         TimeUtils.start();
@@ -54,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("===============================================");
     }
 
-    //演示反射的两种写法
+    /**
+     * 演示反射的两种写法
+     * @throws ClassNotFoundException
+     */
     private void demo1() throws ClassNotFoundException {
         //定义两个类型都未知的Class , 设置初值为null, 看看如何给它们赋值成Person类
         Class<?> class1;
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Demo3: 通过Java反射机制，用Class 创建类对象[这也就是反射存在的意义所在]
+     * Demo2: 通过Java反射机制，用Class 创建类对象[这也就是反射存在的意义所在]
      *
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Demo4: 通过Java反射机制得到一个类的构造函数，并实现创建带参实例对象
+     * Demo3: 通过Java反射机制得到一个类的构造函数，并实现创建带参实例对象
      *
      * @throws ClassNotFoundException
      * @throws InvocationTargetException
@@ -130,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Demo5: 通过Java反射机制操作成员变量, set 和 get
+     * Demo4: 通过Java反射机制操作成员变量, set 和 get
      *
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
@@ -161,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * demo6: 通过Java反射机制得到类的一些属性： 继承的接口，父类，函数信息，成员信息，类型等
+     * demo5: 通过Java反射机制得到类的一些属性： 继承的接口，父类，函数信息，成员信息，类型等
      *
      * @throws ClassNotFoundException
      */
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Demo7: 通过Java反射机制调用类方法
+     * Demo6: 通过Java反射机制调用类方法
      *
      * @throws ClassNotFoundException
      * @throws NoSuchMethodException
@@ -231,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Demo8: 通过Java反射机制得到类加载器信息
+     * Demo7: 通过Java反射机制得到类加载器信息
      * <p/>
      * 在java中有三种类类加载器。[这段资料网上截取]
      * <p/>
