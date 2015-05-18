@@ -1,26 +1,26 @@
 # JavaReflect
 This is a sample of java reflect.
 
-Demo0 : no reflect 
+Demo0 : 不使用反射，直接通过New生成对象
 
 ```java
 Person mPerson = new Person();
 mPerson.setAge("28");
 mPerson.setName("Xiao Ming");
 ```
-Demo1 : who to use reflect
+Demo1 : 通过反射获取类信息
 
 ```java
 1.
-Class<?> class1;
-class1 = Class.forName("com.gracker.javareflect.Person");
+        Class<?> class1;
+        class1 = Class.forName("com.gracker.javareflect.Person");
 
 2.
-Class<?> class2;
-class2 = Person.class;
+        Class<?> class2;
+        class2 = Person.class;
 ```
 
-Demo2: 
+Demo2: 反射调用无参数的构造函数
 
 ```java
         class1 = Class.forName("com.gracker.javareflect.Person");
@@ -30,14 +30,14 @@ Demo2:
         person.setName("Gao Jianwu");
 ```
 
-Demo3:
+Demo3: 通过反射调用有参数的构造函数
 
 ```java
         Person person;
         person = (Person) constructors[1].newInstance("20", "Sun Yibo");
 ```
 
-Demo4:
+Demo4: 通过反射获取和设置类变量
 
 ```java
         Class<?> class1;
@@ -53,7 +53,7 @@ Demo4:
         personAgeField.set(obj, "30");
 ```
 
-Demo5:
+Demo5:通过反射获取子类和父类的相关信息
 
 ```java
         Class<?> class1;
@@ -86,7 +86,7 @@ Demo5:
         }
 ```
 
-Demo6:
+Demo6:通过反射调用类方法
 
 ```java
         Class<?> class1;
@@ -101,7 +101,7 @@ Demo6:
         method.invoke(class1.newInstance(), 100);
 ```
 
-Demo7:
+Demo7: 通过反射获取类加载器
 
 ```java
         Class<?> class1;
