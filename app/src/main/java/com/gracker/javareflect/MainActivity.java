@@ -281,14 +281,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Demo7: 通过Java反射机制得到类加载器信息
-     * <p/>
-     * 在java中有三种类类加载器。[这段资料网上截取]
-     * <p/>
-     * 1）Bootstrap ClassLoader 此加载器采用c++编写，一般开发中很少见。
-     * <p/>
-     * 2）Extension ClassLoader 用来进行扩展类的加载，一般对应的是jre\lib\ext目录中的类
-     * <p/>
-     * 3）AppClassLoader 加载classpath指定的类，是最常用的加载器。同时也是java中默认的加载器。
      *
      * @throws ClassNotFoundException
      */
@@ -296,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("=====================Demo7=====================");
 
         Class<?> class1;
-        class1 = Class.forName("com.gracker.javareflect.SuperMan");
+        class1 = Class.forName(ClASS_NAME_SUPERMAN);
         String nameString = class1.getClassLoader().getClass().getName();
 
         System.out.println("Demo8: 类加载器类名: " + nameString);
