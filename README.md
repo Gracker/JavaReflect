@@ -21,11 +21,11 @@ mPerson.setName("Xiao Ming");
 Demo1 : 通过反射获取类信息
 
 ```java
-1.
+        //第一种写法
         Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.Person");
 
-2.
+        //第二种写法
         Class<?> class2;
         class2 = Person.class;
 ```
