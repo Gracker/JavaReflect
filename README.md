@@ -1,5 +1,5 @@
 # Java反射的使用
-这个小例子简单介绍了Java使用反射的各种方法，帮助大家快速掌握Java反射的基本使用方法。
+这个小例子简单介绍了Java使用反射的各种方法，帮助大家快速掌握Java反射的基本使用方法。例子程序是用Android Studio编写的,如果你使用Eclipse,新建一个工程,拷贝src下面的几个类过去就可以了.Android Studio用户可以直接打开.
 
 # TODO
 1. 反射的效率对比
@@ -21,11 +21,11 @@ mPerson.setName("Xiao Ming");
 Demo1 : 通过反射获取类信息
 
 ```java
-1.
+        //第一种写法
         Class<?> class1;
         class1 = Class.forName("com.gracker.javareflect.Person");
 
-2.
+        //第二种写法
         Class<?> class2;
         class2 = Person.class;
 ```
