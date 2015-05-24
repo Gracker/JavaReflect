@@ -118,3 +118,74 @@ Demo7: 通过反射获取类加载器
         class1 = Class.forName("com.gracker.javareflect.SuperMan");
         String nameString = class1.getClassLoader().getClass().getName();
 ```
+Demo8 : 通过反射调用Android系统的类
+
+```
+        Class<?> class1;
+        class1 = Class.forName(ClASS_NAME_SYSTEM_WIDGET);
+        Field personNameField = class1.getDeclaredField("USE_VSYNC");
+```
+
+Demo9 ： 反射效率对比：直接调用 vs 反射调用，测试类为Android中的Notification类
+
+```java
+        //直接调用
+        Notification notification = new Notification();
+        notification.iconLevel = 0;
+        notification.flags = 1;
+        notification.icon = R.drawable.abc_ab_share_pack_mtrl_alpha;
+        notification.color = R.color.abc_input_method_navigation_guard;
+
+        //反射调用
+
+        Class<?> class1;
+        class1 = Class.forName("android.app.Notification");
+        Object object = class1.newInstance();
+
+        Field iconLevel = class1.getDeclaredField("iconLevel");
+        Field flags = class1.getDeclaredField("flags");
+        Field icon = class1.getDeclaredField("icon");
+        Field color = class1.getDeclaredField("color");
+        iconLevel.setAccessible(true);
+        flags.setAccessible(true);
+        icon.setAccessible(true);
+        color.setAccessible(true);
+        iconLevel.setInt(object, 1);
+        flags.setInt(object, 1);
+        icon.setInt(object, R.drawable.abc_ab_share_pack_mtrl_alpha);
+        color.setInt(object, R.color.abc_input_method_navigation_guard);
+```
+
+Demo10 ： 和Demo9类似 只是循环调用了很多次
+
+```java
+
+        //直接调用
+        for (int i = 0; i < RECYCLE_TIME; i++) {
+            Notification notification = new Notification();
+            notification.iconLevel = 0;
+            notification.flags = 1;
+            notification.icon = R.drawable.abc_ab_share_pack_mtrl_alpha;
+            notification.color = R.color.abc_input_method_navigation_guard;
+        }
+
+        //循环调用
+        for (int i = 0; i < RECYCLE_TIME; i++) {
+            Class<?> class1;
+            class1 = Class.forName("android.app.Notification");
+            Object object = class1.newInstance();
+
+            Field iconLevel = class1.getDeclaredField("iconLevel");
+            Field flags = class1.getDeclaredField("flags");
+            Field icon = class1.getDeclaredField("icon");
+            Field color = class1.getDeclaredField("color");
+            iconLevel.setAccessible(true);
+            flags.setAccessible(true);
+            icon.setAccessible(true);
+            color.setAccessible(true);
+            iconLevel.setInt(object, 1);
+            flags.setInt(object, 1);
+            icon.setInt(object, R.drawable.abc_ab_share_pack_mtrl_alpha);
+            color.setInt(object, R.color.abc_input_method_navigation_guard);
+        }
+```
