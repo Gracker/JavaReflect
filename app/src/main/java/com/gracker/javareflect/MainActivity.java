@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String ClASS_NAME_SUPERMAN = "com.gracker.javareflect.SuperMan";
     public static final String ClASS_NAME_SYSTEMUI_RECENT = "com.android.systemui.mzrecent.DragView";
     public static final String ClASS_NAME_SYSTEM_WIDGET = "android.view.Choreographer";
+    private static final int RECYCLE_TIME = 100000;
 
     private TextView mTextView;
     private int demoIndex = 0;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.txt_reflect);
-        testDemo(0);
+
+        testDemo(9);
     }
 
     private void testDemo(int demoIndex) {
@@ -114,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     break;
+                case 10:
+                    try {
+                        demo10();
+                    } catch (ClassNotFoundException | NoSuchFieldException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 default:
                     break;
             }
@@ -406,8 +414,10 @@ public class MainActivity extends AppCompatActivity {
         Notification notification = new Notification();
         notification.iconLevel = 0;
         notification.flags = 1;
+        notification.icon = R.drawable.abc_ab_share_pack_mtrl_alpha;
+        notification.color = R.color.abc_input_method_navigation_guard;
         String result1 = "\n*************\n"
-                + "Demo9.1 : get package name and class name  only\n "
+                + "Demo9.1 : new Notification directly\n "
                 + " Time = " + TimeUtils.end();
         mTextView.append(result1);
 
@@ -418,13 +428,71 @@ public class MainActivity extends AppCompatActivity {
         Object object = class1.newInstance();
 
         Field iconLevel = class1.getDeclaredField("iconLevel");
-        Field flags = class1.getDeclaredField("iconLevel");
+        Field flags = class1.getDeclaredField("flags");
+        Field icon = class1.getDeclaredField("icon");
+        Field color = class1.getDeclaredField("color");
         iconLevel.setAccessible(true);
         flags.setAccessible(true);
+        icon.setAccessible(true);
+        color.setAccessible(true);
         iconLevel.setInt(object, 1);
         flags.setInt(object, 1);
+        icon.setInt(object, R.drawable.abc_ab_share_pack_mtrl_alpha);
+        color.setInt(object, R.color.abc_input_method_navigation_guard);
+
         String result2 = "\n*************\n"
-                + "Demo9.2 : get package name and class name  only\n "
+                + "Demo9.2 : new Notification with reflect\n "
+                + " Time = " + TimeUtils.end();
+        mTextView.append(result2);
+    }
+
+    /**
+     * 循环一定次数对比反射调用Notification和正常调用Notification的效率
+     *
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void demo10() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
+        //正常初始化一个Notification
+        TimeUtils.start();
+
+        for (int i = 0; i < RECYCLE_TIME; i++) {
+            Notification notification = new Notification();
+            notification.iconLevel = 0;
+            notification.flags = 1;
+            notification.icon = R.drawable.abc_ab_share_pack_mtrl_alpha;
+            notification.color = R.color.abc_input_method_navigation_guard;
+        }
+        String result1 = "\n*************\n"
+                + "Demo10.1 : no reflcet:recycle 1000 Times \n "
+                + " Time = " + TimeUtils.end();
+        mTextView.append(result1);
+
+        //通过反射初始化一个Notification
+        TimeUtils.start();
+        for (int i = 0; i < RECYCLE_TIME; i++) {
+            Class<?> class1;
+            class1 = Class.forName("android.app.Notification");
+            Object object = class1.newInstance();
+
+            Field iconLevel = class1.getDeclaredField("iconLevel");
+            Field flags = class1.getDeclaredField("flags");
+            Field icon = class1.getDeclaredField("icon");
+            Field color = class1.getDeclaredField("color");
+            iconLevel.setAccessible(true);
+            flags.setAccessible(true);
+            icon.setAccessible(true);
+            color.setAccessible(true);
+            iconLevel.setInt(object, 1);
+            flags.setInt(object, 1);
+            icon.setInt(object, R.drawable.abc_ab_share_pack_mtrl_alpha);
+            color.setInt(object, R.color.abc_input_method_navigation_guard);
+        }
+        String result2 = "\n*************\n"
+                + "Demo10.2 : reflcet:recycle 1000 Times \n "
                 + " Time = " + TimeUtils.end();
         mTextView.append(result2);
     }
