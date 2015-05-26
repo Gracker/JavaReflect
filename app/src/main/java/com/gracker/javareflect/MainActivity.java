@@ -1,8 +1,10 @@
 package com.gracker.javareflect;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,35 +22,103 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final String ClASS_NAME = "com.gracker.javareflect.Person";
     public static final String ClASS_NAME_SUPERMAN = "com.gracker.javareflect.SuperMan";
+    public static final String ClASS_NAME_SYSTEMUI_RECENT = "com.android.systemui.mzrecent.DragView";
+    public static final String ClASS_NAME_SYSTEM_WIDGET = "android.view.Choreographer";
 
     private TextView mTextView;
+    private int demoIndex = 0;
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mTextView = (TextView) findViewById(R.id.txt_reflect);
-
-        try {
-            demo0();
-            demo1();
-            demo2();
-            demo3();
-            demo4();
-            demo5();
-            demo6();
-            demo7();
-        } catch (ClassNotFoundException
-                | InvocationTargetException
-                | IllegalAccessException
-                | InstantiationException
-                | NoSuchFieldException
-                | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        testDemo(0);
     }
+
+    private void testDemo(int demoIndex) {
+        this.demoIndex = demoIndex;
+        new Handler().postDelayed(r, 1000);
+    }
+
+
+    Runnable r = new Runnable() {
+        @TargetApi(Build.VERSION_CODES.KITKAT)
+        @Override
+        public void run() {
+            switch (demoIndex) {
+                case 0:
+                    demo0();
+                    break;
+                case 1:
+                    try {
+                        demo1();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        demo2();
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    try {
+                        demo3();
+                    } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 4:
+                    try {
+                        demo4();
+                    } catch (IllegalAccessException | ClassNotFoundException | NoSuchFieldException | InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 5:
+                    try {
+                        demo5();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 6:
+                    try {
+                        demo6();
+                    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 7:
+                    try {
+                        demo7();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 8:
+                    try {
+                        demo8();
+                    } catch (ClassNotFoundException | NoSuchFieldException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 9:
+                    try {
+                        demo9();
+                    } catch (ClassNotFoundException | NoSuchFieldException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     /**
      * 正常加载Person类
@@ -295,6 +365,70 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("================================================");
 
     }
+
+    /**
+     * 通过反射调用系统类
+     *
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    private void demo8() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
+        TimeUtils.start();
+        Class<?> class1;
+
+        class1 = Class.forName(ClASS_NAME_SYSTEM_WIDGET);
+
+        Field personNameField = class1.getDeclaredField("USE_VSYNC");
+
+        String result = "\n*************\n"
+                + "Demo8 : get package name and class name  only\n "
+                + " PackageName = " + class1.getPackage().getName() + "\n"
+                + " ClassName = " + class1.getName() + "\n"
+                + " personNameField = " + personNameField.toString() + "\n"
+                + " Time = " + TimeUtils.end();
+        mTextView.append(result);
+    }
+
+    /**
+     * 对比反射调用Notification和正常调用Notification的效率
+     *
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void demo9() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
+        //正常初始化一个Notification
+        TimeUtils.start();
+        Notification notification = new Notification();
+        notification.iconLevel = 0;
+        notification.flags = 1;
+        String result1 = "\n*************\n"
+                + "Demo9.1 : get package name and class name  only\n "
+                + " Time = " + TimeUtils.end();
+        mTextView.append(result1);
+
+        //通过反射初始化一个Notification
+        TimeUtils.start();
+        Class<?> class1;
+        class1 = Class.forName("android.app.Notification");
+        Object object = class1.newInstance();
+
+        Field iconLevel = class1.getDeclaredField("iconLevel");
+        Field flags = class1.getDeclaredField("iconLevel");
+        iconLevel.setAccessible(true);
+        flags.setAccessible(true);
+        iconLevel.setInt(object, 1);
+        flags.setInt(object, 1);
+        String result2 = "\n*************\n"
+                + "Demo9.2 : get package name and class name  only\n "
+                + " Time = " + TimeUtils.end();
+        mTextView.append(result2);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
